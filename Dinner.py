@@ -1,8 +1,32 @@
-from Cookbook import cook_book
 from pprint import pprint
 
-with open("Cookbook.py", 'r', encoding='utf-8') as f:
-    data = f.read()
+def read_cook_book(file):
+    cookbook = {}
+    with open(file, "r", encoding="utf-8") as file:
+        while True:
+            dish_name = file.readline().strip()
+            if not dish_name:
+                file.readline().strip()
+                break
+
+            ingredient_count = int(file.readline().strip())
+            ingredients = []
+
+            for i in range(ingredient_count):
+                ingredient_line = file.readline().strip()
+                ingredient_name, quantity, measure = ingredient_line.split(" | ")
+                ingredients.append({
+                    'ingredient_name': ingredient_name,
+                    'quantity': int(quantity),
+                    'measure': measure
+                })
+
+            cookbook[dish_name] = ingredients
+
+    return cookbook
+
+cook_book = read_cook_book('recipes.txt')
+
 
 def get_shop_list_by_dishes(dishes, person_count):
     list1 = []
@@ -18,4 +42,4 @@ def get_shop_list_by_dishes(dishes, person_count):
     for a in list3:
         print(a)
 
-get_shop_list_by_dishes(['Запеченный картофель', 'Омлет'], 2)
+get_shop_list_by_dishes(['Запеченный картофель','Омлет'], 2)
